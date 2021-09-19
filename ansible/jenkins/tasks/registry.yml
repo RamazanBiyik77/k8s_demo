@@ -23,6 +23,32 @@
     - docker-ce-cli 
     - containerd.io
 
+- name: Create cert directory
+  command: "{{ item }}"
+  with_items:
+   - sudo mkdir -p /etc/docker/certs.d/server-3:5000
+   - sudo mkdir -p /etc/certs
+
+- name: Copy cert1
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../certs/ca.crt"
+    dest: /etc/certs
+
+- name: Copy key1
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../certs/ca.key"
+    dest: /etc/certs
+
+- name: Copy cert
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../certs/ca.crt"
+    dest: /etc/docker/certs.d/server-3:5000/
+
+- name: Copy key
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../certs/ca.key"
+    dest: /etc/docker/certs.d/server-3:5000/
+
 - name: Add vagrant user to docker group
   user:
     name: vagrant
@@ -50,7 +76,7 @@
   with_items:
    - mkdir -p /home/vagrant/.kube
    - scp -r -o StrictHostKeyChecking=no vagrant@192.168.50.10:/home/vagrant/.kube/* /home/vagrant/.kube/
-   - sudo chmod -R 777 home/vagrant/.kube
+   - sudo chmod -R 777 /home/vagrant/.kube
    - sudo cp -r /home/vagrant/.kube /var/lib/jenkins
 
 - name: Install Kubernetes binaries
@@ -74,5 +100,5 @@
 #     dest: /certs
 
 - name: Run Registry
-  ansible.builtin.command: docker run -d   -p 80:5000   --restart=always   --name registry   -v /registry:/var/lib/registry   registry:2
+  ansible.builtin.command: docker run -d -p 5000:5000 --restart=always --name registry -v /etc/certs:/etc/certs -e REGISTRY_HTTP_TLS_CERTIFICATE=/etc/certs/ca.crt -e REGISTRY_HTTP_TLS_KEY=/etc/certs/ca.key registry
   ignore_errors: yes

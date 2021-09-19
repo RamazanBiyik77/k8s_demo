@@ -21,7 +21,6 @@ jenkins_plugins:
  - name: influxdb
    version: "1.12.1"
  - docker
- - git
  - Kubernetes
  - docker-workflow
 

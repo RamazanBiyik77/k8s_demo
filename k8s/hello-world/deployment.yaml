@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: hello-world-app
-        image: localhost/hello-world
+        image: server-3:5000/hello-world
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

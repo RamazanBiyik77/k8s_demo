@@ -36,6 +36,16 @@
       - docker-ce-cli 
       - containerd.io
 
+  - name: Create cert directory
+    command: "{{ item }}"
+    with_items:
+     - sudo mkdir -p /etc/docker/certs.d/server-3:5000
+  
+  - name: Copy cert
+    ansible.builtin.copy:
+      src: "{{ playbook_dir }}/../certs/ca.crt"
+      dest: /etc/docker/certs.d/server-3:5000/ca.crt
+
   - name: Add vagrant user to docker group
     user:
       name: vagrant

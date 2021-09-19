@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
         master.vm.network :forwarded_port, guest: 8080, host: 9090, id: 'tcp'
         master.vm.network :forwarded_port, guest: 22, host: 8002, id: 'ssh'
         master.vm.network :forwarded_port, guest: 5000, host: 5001, id: 'app'
+        master.vm.provision "shell", inline: "echo '192.168.50.12 server-3' >> /etc/hosts"
         master.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbooks/master-playbook.yml"
             ansible.extra_vars = {
@@ -27,6 +28,7 @@ Vagrant.configure("2") do |config|
             }
         end
     end
+    
 
     config.vm.define "server-2" do |server2|
         server2.vm.box = IMAGE_NAME
@@ -35,6 +37,7 @@ Vagrant.configure("2") do |config|
         server2.vm.network :forwarded_port, guest: 22, host: 8003, id: 'ssh'
         server2.vm.network :forwarded_port, guest: 8080, host: 9091, id: 'tcp'
         server2.vm.network :forwarded_port, guest: 5000, host: 5000, id: 'app'
+        server2.vm.provision "shell", inline: "echo '192.168.50.12 server-3' >> /etc/hosts"
         server2.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbooks/node-playbook.yml"
             ansible.extra_vars = {

@@ -37,6 +37,17 @@
       - containerd.io
     notify:
       - docker status
+
+  - name: Create cert directory
+    command: "{{ item }}"
+    with_items:
+     - sudo mkdir -p /etc/docker/certs.d/server-3:5000
+  
+  - name: Copy cert
+    ansible.builtin.copy:
+      src: "{{ playbook_dir }}/../certs/ca.crt"
+      dest: /etc/docker/certs.d/server-3:5000/ca.crt
+
   # Maybe ll need for change user
   - name: Add vagrant user to docker group
     user:
@@ -97,6 +108,7 @@
     command: "{{ item }}"
     with_items:
      - mkdir -p /home/vagrant/.kube
+     - mkdir -p /etc/docker/certs.d/server-3:5000
      - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
      - chown vagrant:vagrant /home/vagrant/.kube/config
      
