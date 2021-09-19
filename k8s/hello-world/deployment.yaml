@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-world
+  namespace: hello-world
 spec:
   selector:
     matchLabels:
@@ -14,6 +15,6 @@ spec:
       containers:
       - name: hello-world-app
         image: localhost/hello-world
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
