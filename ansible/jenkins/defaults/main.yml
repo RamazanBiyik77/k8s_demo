@@ -21,6 +21,9 @@ jenkins_plugins:
  - name: influxdb
    version: "1.12.1"
  - docker
+ - git
+ - Kubernetes
+ - docker-workflow
 
 jenkins_plugins_state: present
 jenkins_plugin_updates_expiration: 186400

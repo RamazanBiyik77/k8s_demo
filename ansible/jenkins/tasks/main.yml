@@ -63,5 +63,11 @@
     path: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
     state: absent
 
+- name: Give access to docker
+  become: False
+  command: "{{ item }}"
+  with_items:
+   - sudo usermod -a -G docker jenkins
+
 # Update Jenkins and install configured plugins.
 - include_tasks: plugins.yml
