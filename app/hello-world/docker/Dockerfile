@@ -5,10 +5,10 @@ ENV FLASK_APP hello-world.py
 RUN mkdir /app
 WORKDIR /app
 
-COPY src/requirements.txt requirements.txt
+COPY app/src/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-ADD src /app
+ADD app/src /app
 
 EXPOSE 5000
 
