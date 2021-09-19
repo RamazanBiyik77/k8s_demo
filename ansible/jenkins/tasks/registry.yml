@@ -50,6 +50,8 @@
   with_items:
    - mkdir -p /home/vagrant/.kube
    - scp -r -o StrictHostKeyChecking=no vagrant@192.168.50.10:/home/vagrant/.kube/* /home/vagrant/.kube/
+   - sudo chmod -R 777 home/vagrant/.kube
+   - sudo cp -r /home/vagrant/.kube /var/lib/jenkins
 
 - name: Install Kubernetes binaries
   apt: 
@@ -72,5 +74,5 @@
 #     dest: /certs
 
 - name: Run Registry
-  ansible.builtin.command: docker run -d   -p 5000:5000   --restart=always   --name registry   -v /registry:/var/lib/registry   registry:2
+  ansible.builtin.command: docker run -d   -p 80:5000   --restart=always   --name registry   -v /registry:/var/lib/registry   registry:2
   ignore_errors: yes
