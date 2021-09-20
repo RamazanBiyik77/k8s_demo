@@ -21,7 +21,7 @@
 * Ansible
 * Vagrant
 * Current user have to have ssh keys on ~/.ssh directory with named id_rsa and id_rsa.pub. If not files can be created with `ssh-keygen` command
-
+* On your local machine this port shuld be not used by your ather apps `9090`, `9091`, `9092`, `8002`, `8003`, `8004`, `30010`, `30011`
 
 # Installation Steps
 
