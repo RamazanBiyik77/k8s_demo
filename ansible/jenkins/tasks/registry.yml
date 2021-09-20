@@ -65,20 +65,6 @@
     state: present
     filename: kubernetes.list
 
-# - name: Copy kubernetes config
-#   ansible.builtin.copy:
-#     src: "{{ playbook_dir }}/../ansible/certs/"
-#     dest: /certs
-
-- name: Setup kubeconfig for vagrant user
-  become: False
-  command: "{{ item }}"
-  with_items:
-   - mkdir -p /home/vagrant/.kube
-   - scp -r -o StrictHostKeyChecking=no vagrant@192.168.50.10:/home/vagrant/.kube/* /home/vagrant/.kube/
-   - sudo chmod -R 777 /home/vagrant/.kube
-   - sudo cp -r /home/vagrant/.kube /var/lib/jenkins
-
 - name: Install Kubernetes binaries
   apt: 
     name: "{{ packages }}"
@@ -94,11 +80,21 @@
       - kubectl=1.19.1-00
       - apache2-utils
 
-# - name: Copy certs
-#   ansible.builtin.copy:
-#     src: "{{ playbook_dir }}/../ansible/certs/"
-#     dest: /certs
+- name: Setup kubeconfig for vagrant user
+  become: False
+  command: "{{ item }}"
+  with_items:
+   - mkdir -p /home/vagrant/.kube
+   - scp -r -o StrictHostKeyChecking=no vagrant@192.168.50.10:/home/vagrant/.kube/* /home/vagrant/.kube/
+   - sudo chmod -R 777 /home/vagrant/.kube
+   - sudo cp -r /home/vagrant/.kube /var/lib/jenkins
 
 - name: Run Registry
   ansible.builtin.command: docker run -d -p 5000:5000 --restart=always --name registry -v /etc/certs:/etc/certs -e REGISTRY_HTTP_TLS_CERTIFICATE=/etc/certs/ca.crt -e REGISTRY_HTTP_TLS_KEY=/etc/certs/ca.key registry
   ignore_errors: yes
+
+- name: Setup kubeconfig for jenkins
+  become: False
+  command: "{{ item }}"
+  with_items:
+   - sudo cp -r /home/vagrant/.kube /var/lib/jenkins

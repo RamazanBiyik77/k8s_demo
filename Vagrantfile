@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
         master.vm.hostname = "server-1"
         master.vm.network :forwarded_port, guest: 8080, host: 9090, id: 'tcp'
         master.vm.network :forwarded_port, guest: 22, host: 8002, id: 'ssh'
-        master.vm.network :forwarded_port, guest: 5000, host: 5001, id: 'app'
+        master.vm.network :forwarded_port, guest: 30010, host: 30010, id: 'app'
         master.vm.provision "shell", inline: "echo '192.168.50.12 server-3' >> /etc/hosts"
         master.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbooks/master-playbook.yml"
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
         server2.vm.hostname = "server-2"
         server2.vm.network :forwarded_port, guest: 22, host: 8003, id: 'ssh'
         server2.vm.network :forwarded_port, guest: 8080, host: 9091, id: 'tcp'
-        server2.vm.network :forwarded_port, guest: 5000, host: 5000, id: 'app'
+        server2.vm.network :forwarded_port, guest: 30010, host: 30011, id: 'app'
         server2.vm.provision "shell", inline: "echo '192.168.50.12 server-3' >> /etc/hosts"
         server2.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbooks/node-playbook.yml"
