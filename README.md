@@ -51,6 +51,7 @@ All jenkins requirement like plugins installed with jenkins ansible taks. You sh
 
 - On the main menu of the jenkins click `New Item`. This is for creating new job.
 - Fill the  item name section as you desired.
+- Select `Pipeline` section
 - Paste [this](https://github.com/RamazanBiyik77/k8s_demo/blob/master/configs/jenkins/hello-world.groovy) content to Pipeline Script section. And save.
 - Your pipelin is created. Click "Build Now" button on the left pane
 
